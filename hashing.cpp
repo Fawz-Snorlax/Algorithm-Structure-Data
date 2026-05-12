@@ -130,6 +130,16 @@ void printHash (Hash hashTable[]) {
     cout << endl;
 }
 
+int countData(Hash hashTable[]) {
+    int count = 0;
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        if (hashTable[i].first != nullptr) {
+            count++;
+        }
+    }
+    return count;
+}
+
 // Soal 1 membuat fungsi logika pencarian
 // jika ketemu return "found at index: {}"
 // selainnya return "not found"
@@ -155,6 +165,12 @@ void searchValue (Hash hashTable[], int data) {
 // jika index yang dihasilkan sudah terisi maka
 // data digeser ke index selanjutnya
 void insertLinearProbing (Hash hashTable[], int data) {
+    int N = countData(hashTable);
+    if (N >= TABLE_SIZE / 2) {
+        cout << "Data sudah mencapai batas maksimal!" << endl;
+        return;
+    }
+
     int index = getHashIndex(data);
     int step = 0;
 
@@ -172,6 +188,12 @@ void insertLinearProbing (Hash hashTable[], int data) {
 // untuk logika insert: index didapat dari (newData % mod M + step*step) % M
 // jika index yang dihasilkan sudah terisi maka step += 1
 void insertQuadraticProbing (Hash hashTable[], int data) {
+    int N = countData(hashTable);
+    if (N >= TABLE_SIZE / 2) {
+        cout << "Data sudah mencapai batas maksimal!" << endl;
+        return;
+    }
+    
     int index = getHashIndex(data);
     int step = 0;
 
@@ -186,32 +208,35 @@ int main () {
     Hash hashTable[TABLE_SIZE];
 
     createEmptyHash(hashTable);
+    //   N ≤ M/2 (khusus linier probing dan quadratic probing)
+    //   N adalah jumlah data
+    //   M adalah bilangan pembagi (10)
     //   0: 10
-    //   1: 1, 11, 31
-    //   2: 2, 22
-    //   3: 3, 23
-    //   4: 4, 24
-    //   5: 5, 155
-    //   6: 6
-    //   7: 7
-    //   8: 8
-    //   9: 9
-    insertValue(hashTable, 1);
-    insertValue(hashTable, 2);
-    insertValue(hashTable, 3);
-    insertValue(hashTable, 4);
+    //   1: 11, 31
+    //   2: 
+    //   3: 
+    //   4: 20
+    //   5: 5, 15
+    //   6: 25
+    //   7: 
+    //   8: 
+    //   9: 
+
+    //   kondisi ketika data belum mencapai batas maksimal
     insertValue(hashTable, 5);
-    insertValue(hashTable, 6);
-    insertValue(hashTable, 7);
-    insertValue(hashTable, 8);
-    insertValue(hashTable, 9);
     insertValue(hashTable, 10);
     insertValue(hashTable, 11);
     insertValue(hashTable, 31);
-    insertValue(hashTable, 22);
-    insertValue(hashTable, 23);
-    insertValue(hashTable, 24);
-    insertValue(hashTable, 155);
+    insertValue(hashTable, 15);
+    insertLinearProbing(hashTable, 25);
+    insertQuadraticProbing(hashTable, 20);
+    
+    printHash(hashTable);
+    
+    //   kondisi ketika data sudah mencapai batas maksimal
+    insertValue(hashTable, 14);
+    insertLinearProbing(hashTable, 30);
+    insertQuadraticProbing(hashTable, 12);
     
     printHash(hashTable);
 
